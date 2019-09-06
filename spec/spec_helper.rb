@@ -1,4 +1,15 @@
 require "bundler/setup"
+require "awesome_print"
+AwesomePrint.defaults = {
+  indent: 2,
+  index:  false,
+}
+
+require 'pp'
+
+require 'fakefs/spec_helpers'
+require 'fakefs/safe'
+
 require "armando"
 
 RSpec.configure do |config|
