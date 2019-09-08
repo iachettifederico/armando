@@ -64,7 +64,7 @@ module Armando
     end
 
     it "allows adding a version" do
-      content = GemfileGenerator.new(['awesome_print:0.1.2']).render
+      content = GemfileGenerator.new(['awesome_print::0.1.2']).render
 
       expected = <<~EOF
         source "https://rubygems.org"
@@ -76,7 +76,7 @@ module Armando
     end
 
     it "allows adding a group" do
-      content = GemfileGenerator.new(['awesome_print::development']).render
+      content = GemfileGenerator.new(['awesome_print:development']).render
 
       expected = <<~EOF
         source "https://rubygems.org"
@@ -91,8 +91,8 @@ module Armando
 
     it "allows adding multiple one gem groups" do
       content = GemfileGenerator.new([
-                                       'awesome_print::development',
-                                       'table_print::staging',
+                                       'awesome_print:development',
+                                       'table_print:staging',
                                      ]).render
 
       expected = <<~EOF
@@ -113,8 +113,8 @@ module Armando
 
     it "allows adding multiple gems to a group" do
       content = GemfileGenerator.new([
-                                       'awesome_print::development',
-                                       'table_print::development',
+                                       'awesome_print:development',
+                                       'table_print:development',
                                      ]).render
 
       expected = <<~EOF
@@ -131,7 +131,7 @@ module Armando
 
     it "allows adding a gem to multiple groups" do
       content = GemfileGenerator.new([
-                                       'awesome_print::development@production',
+                                       'awesome_print:development+production',
                                      ]).render
 
       expected = <<~EOF
@@ -147,13 +147,13 @@ module Armando
 
     it "populates the Gemfile" do
       content = GemfileGenerator.new([
-                                       'awesome_print:1.2.3:development@test',
-                                       'rom:5.6.7',
-                                       'rspec::test',
-                                       'table_print::development@test',
-                                       'rom-sqlite::development',
+                                       'awesome_print:development+test:1.2.3',
+                                       'rom::5.6.7',
+                                       'rspec:test',
+                                       'table_print:development+test',
+                                       'rom-sqlite:development',
                                        'roda',
-                                       'dotenv::development@staging',
+                                       'dotenv:development+staging',
                                      ]).render
 
       expected = <<~EOF

@@ -35,7 +35,7 @@ RSpec.describe Armando do
   end
 
   it "populates the Gemfile" do
-    armando 'gemfile awesome_print:1.2.3:development@test rom:5.6.7 rspec::test table_print::development@test "rom-sqlite::development" roda dotenv::development@staging'
+    armando 'gemfile awesome_print:development+test:1.2.3 rom::5.6.7 rspec:test table_print:development+test "rom-sqlite:development" roda dotenv:development+staging'
 
     expected = <<~EOF
       source "https://rubygems.org"

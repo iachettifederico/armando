@@ -35,7 +35,7 @@ module Armando
 
     def all_groups
       arguments.group_by { |argument|
-        argument.split(':')[2].to_s.split('@').sort
+        argument.split(':')[1].to_s.split('+').sort
       }.to_a.sort_by { |groups, _|
         [groups.count, groups]
       }
@@ -44,7 +44,7 @@ module Armando
     class GemGenerator
       def initialize(input_string)
         @name    = input_string.split(':')[0]
-        @version = generate_version(input_string.split(':')[1])
+        @version = generate_version(input_string.split(':')[2])
       end
 
       def render
