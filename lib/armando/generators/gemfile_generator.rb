@@ -1,56 +1,66 @@
 module Armando
-  class GemfileGenerator < Armando::Generator
-    def generate!
-      gems = arguments.map { |gem_key|
-        gem(gem_key)
-      }.join("\n")
-
-      gems_string = if arguments.any?
-                      "\n\n#{gems}"
-                    else
-                      ""
-                    end
-
-      gemfile_boilerplate = <<~EOF
-       source "https://rubygems.org"#{gems_string}
-      EOF
-
-      File.write('Gemfile', gemfile_boilerplate.gsub(/\n\n\Z/, "\n"))
+  class GemfileGenerator < Armando::FileGenerator
+    def initialize(arguments=[])
+      super('Gemfile', arguments)
     end
 
     private
 
-    def gem(gem_key)
-      name, args = gem_key.split(':', 2)
+    def content
+      source
+      gems
+    end
 
-      version, groups = args.to_s.split(':')
+    def source
+      line 'source "https://rubygems.org"'
+    end
 
-      args_str = gem_version(version)
+    def gems
+      all_groups.each do |groups, gems|
+        newline
 
-      gem_groups(groups) do
-        "gem #{gem_name(name)}#{args_str}"
+        add_group groups do
+          gems.sort.each do |gem|
+            line GemGenerator.new(gem).render
+          end
+        end
       end
     end
 
-    def gem_name(name)
-      '"%s"' % name
-    end
-
-    def gem_version(version)
-      return '' if version.to_s == ''
-
-      ', "~> %s"' % version
-    end
-
-    def gem_groups(groups_str, &block)
-      if groups_str
-        <<~EOF
-          group :#{groups_str} do
-            #{block.call}
-          end
-        EOF
-      else
+    def add_group(groups)
+      block_maybe(groups.any?, "group :#{groups.join(', :')}") {
         yield
+      }
+    end
+
+    def all_groups
+      arguments.group_by { |argument|
+        argument.split(':')[2].to_s.split('@').sort
+      }.to_a.sort_by { |groups, _|
+        [groups.count, groups]
+      }
+    end
+
+    class GemGenerator
+      def initialize(input_string)
+        @name    = input_string.split(':')[0]
+        @version = generate_version(input_string.split(':')[1])
+      end
+
+      def render
+        "gem \"#{name}\"#{version}"
+      end
+
+      private
+
+      attr_reader :name
+      attr_reader :version
+      attr_reader :indent
+
+      def generate_version(version_string)
+        return '' if version_string.to_s == ''
+
+        ", \"~> %s\"" % version_string
       end
     end
   end
