@@ -2,12 +2,6 @@
 
 require "armando"
 
-require "awesome_print"
-AwesomePrint.defaults = {
-  indent: 2,
-  index:  false,
-}
-
 generator = ARGV[0]
 arguments = ARGV[1..-1]
 

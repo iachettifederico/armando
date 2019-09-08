@@ -9,7 +9,7 @@ module Armando
 
   def self.for(generator_key, arguments)
     {
-      'gemfile' => GemfileGenerator
+      'gemfile' => GemfileGenerator,
     }[generator_key.downcase].new(arguments)
   end
 end
