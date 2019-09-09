@@ -35,7 +35,7 @@ module Armando
 
     def all_groups
       arguments.group_by { |argument|
-        argument.split(':')[1].to_s.split('+').sort
+        argument.split(':')[1].to_s.split(',').sort
       }.to_a.sort_by { |groups, _|
         [groups.count, groups]
       }

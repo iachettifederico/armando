@@ -131,7 +131,7 @@ module Armando
 
     it "allows adding a gem to multiple groups" do
       content = GemfileGenerator.new([
-                                       'awesome_print:development+production',
+                                       'awesome_print:development,production',
                                      ]).render
 
       expected = <<~EOF
@@ -147,13 +147,13 @@ module Armando
 
     it "populates the Gemfile" do
       content = GemfileGenerator.new([
-                                       'awesome_print:development+test:1.2.3',
+                                       'awesome_print:development,test:1.2.3',
                                        'rom::5.6.7',
                                        'rspec:test',
-                                       'table_print:development+test',
+                                       'table_print:development,test',
                                        'rom-sqlite:development',
                                        'roda',
-                                       'dotenv:development+staging',
+                                       'dotenv:development,staging',
                                      ]).render
 
       expected = <<~EOF
