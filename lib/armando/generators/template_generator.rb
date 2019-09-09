@@ -37,11 +37,11 @@ module Armando
     end
 
     def initialize(arguments)
-      @file_name     = arguments.shift
+      @file_name = arguments.shift
 
       super(file_name, arguments)
 
-      @variables     = get_variables(arguments)
+      @variables = get_variables(arguments)
     end
 
     private
