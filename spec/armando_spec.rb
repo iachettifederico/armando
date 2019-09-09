@@ -1,3 +1,5 @@
+require 'fileutils'
+
 RSpec.describe Armando do
   before do
     @current_dir = Dir.pwd
@@ -15,7 +17,7 @@ RSpec.describe Armando do
   end
 
   def armando(*args)
-    system "../bin/armando #{args.join(' ')}"
+    `../bin/armando #{args.join(' ')}`
   end
 
   context "Gemfile" do
@@ -53,6 +55,42 @@ RSpec.describe Armando do
       EOF
 
       expect(File.read('Gemfile')).to eql(expected)
+    end
+  end
+
+  context "templates" do
+    let(:templates_dir) { '/tmp/TD' }
+
+    it "has a templates directory" do
+      current_home = ENV.fetch('HOME')
+
+      vars = armando "--variables"
+
+      expect(vars).to include("TEMPLATES_DIR: #{current_home}/ArmandoTemplates")
+    end
+
+    it "allows the user to set a custom templates dir" do
+      vars = armando "--variables --var TEMPLATES_DIR=/tmp/TD"
+
+      expect(vars).to include("TEMPLATES_DIR: /tmp/TD")
+    end
+
+    it "creates a file from a template" do
+      FileUtils.mkdir_p templates_dir
+      
+      template = <<~TEMPLATE
+        This is a template. Magic Number: <%= magic_number %>
+      TEMPLATE
+
+      File.write(File.join(templates_dir, 'test_template'), template)
+      
+      armando "test_template /tmp/my_file magic_number=5 --var TEMPLATES_DIR=#{templates_dir}"
+      
+      expected = <<~TEMPLATE
+        This is a template. Magic Number: 5
+      TEMPLATE
+      
+      expect(File.read('/tmp/my_file')).to eql(expected)
     end
   end
 

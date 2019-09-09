@@ -25,6 +25,11 @@ module Armando
     attr_reader :file_name
     attr_reader :indent_level
 
+    def text(str)
+      str.split("\n").each do |line|
+        @_content << indentation + line
+      end
+    end
 
     def line(str)
       @_content << indentation + str
@@ -61,7 +66,7 @@ module Armando
     def last_lines(n=1)
       @_content.last(n)
     end
-    
+
     def inc_indent
       @indent_level += 1
     end
