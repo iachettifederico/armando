@@ -4,6 +4,7 @@ RSpec.describe Armando do
   before do
     @current_dir = Dir.pwd
     Dir.chdir("tmp")
+    FileUtils.rm_rf('.')
   end
 
   after do
@@ -84,13 +85,25 @@ RSpec.describe Armando do
 
       File.write(File.join(templates_dir, 'test_template'), template)
       
-      armando "test_template /tmp/my_file magic_number=5 --var TEMPLATES_DIR=#{templates_dir}"
+      armando "test_template my_file magic_number=5 --var TEMPLATES_DIR=#{templates_dir}"
       
       expected = <<~TEMPLATE
         This is a template. Magic Number: 5
       TEMPLATE
       
-      expect(File.read('/tmp/my_file')).to eql(expected)
+      expect(File.read('my_file')).to eql(expected)
+    end
+
+    it "throws an error if there is no generator available" do
+      output = armando "nonexistent_template my_file --var TEMPLATES_DIR=#{templates_dir}"
+
+      expected = <<~EOF
+        There is no generator available for "nonexistent_template"
+      EOF
+      expect(output).to eql(expected)
+
+      expect(File.exist?('my_file')).to eql(false)
+      
     end
   end
 

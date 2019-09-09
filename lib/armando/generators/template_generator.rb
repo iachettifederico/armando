@@ -3,10 +3,21 @@ require "erb"
 module Armando
   class TemplateGenerator < FileGenerator
     def self.[](template, configuration)
-      Class.new(self).tap { |generator_class|
-        generator_class.template      = template
+      return NullGenerator unless File.exist?(template_file(configuration, template))
+
+      generator_class = Class.new(self).tap { |generator_class|
+        generator_class.template      = template.downcase
         generator_class.configuration = configuration
       }
+
+    end
+
+    def self.template_file(configuration=self.configuration,
+                           template=self.template)
+      File.join(
+        configuration.fetch('TEMPLATES_DIR'),
+        template,
+      )
     end
 
     def self.template=(value)
@@ -45,10 +56,7 @@ module Armando
     end
 
     def template_file
-      File.join(
-        self.class.configuration.fetch('TEMPLATES_DIR'),
-        self.class.template,
-      )
+      self.class.template_file
     end
 
     def get_variables(args)

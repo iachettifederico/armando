@@ -1,6 +1,7 @@
 require "armando/version"
 
 require "armando/generators/generator"
+require "armando/generators/null_generator"
 require "armando/generators/file_generator"
 require "armando/generators/template_generator"
 require "armando/generators/gemfile_generator"

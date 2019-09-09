@@ -2,6 +2,12 @@
 
 $:.unshift(File.expand_path("../../lib", __FILE__))
 
+require "awesome_print"
+AwesomePrint.defaults = {
+  indent: 2,
+  index:  false,
+}
+
 require "armando"
 
 require "optparse"
@@ -12,10 +18,6 @@ var_sets = {}
 
 option_parser = OptionParser.new do |opts|
   opts.banner = "Usage:"
-
-  # opts.on('-v', '--[no-]verbose', 'Run verbosely') do |a|
-  #   options[:verbose] = a
-  # end
 
   opts.on('--var a=b', 'Set a variable') do |var_value|
     var, value = var_value.split('=')
@@ -42,7 +44,12 @@ if options[:show_variables]
   exit
 end
 
-generator = ARGV[0]
-arguments = ARGV[1..-1]
+generator_name = ARGV[0]
+arguments      = ARGV[1..-1]
 
-Armando.for(generator, arguments, configuration).generate!
+generator = Armando.for(generator_name, arguments, configuration)
+if generator.is_a?(Armando::NullGenerator)
+  puts "There is no generator available for \"#{generator_name}\""
+else
+  generator.generate!
+end

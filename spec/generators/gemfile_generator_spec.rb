@@ -12,22 +12,6 @@ module Armando
       FakeFS.deactivate!
     end
 
-    it "creates a Gemfile" do
-      GemfileGenerator.new.generate!
-
-      expect(File.exist?('Gemfile')).to eql(true)
-    end
-
-    it "populates the Gemfile with some boilerplate" do
-      GemfileGenerator.new.generate!
-
-      expected = <<~EOF
-        source "https://rubygems.org"
-      EOF
-
-      expect(File.read('Gemfile')).to eql(expected)
-    end
-
     it "populates the Gemfile with some boilerplate" do
       content = GemfileGenerator.new.render
 
