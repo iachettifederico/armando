@@ -1,20 +1,20 @@
-require "armando/version"
+# frozen_string_literal: true
 
-require "armando/generators/generator"
-require "armando/generators/null_generator"
-require "armando/generators/file_generator"
-require "armando/generators/template_generator"
-require "armando/generators/gemfile_generator"
+require_relative "armando/version"
+
+require "awesome_print"
+AwesomePrint.defaults = {
+  indent: 2,
+  index:  false,
+}
 
 module Armando
   class Error < StandardError; end
-
-  def self.for(generator_key, arguments, configuration)
-    generator_name = generator_key.downcase
-    {
-      'gemfile' => GemfileGenerator,
-    }.fetch(generator_name) {
-      TemplateGenerator[generator_name, configuration]
-    }.new(arguments)
-  end
+  # Your code goes here...
 end
+
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.setup
+loader.eager_load
+
