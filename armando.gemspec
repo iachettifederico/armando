@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "A simple code generator"
   spec.homepage = "https://rubygems.org/gems/example"
 
-  spec.licenses    = ["MIT"]
+  spec.licenses = ["MIT"]
 
   spec.metadata["homepage_uri"] = spec.homepage
   # spec.metadata["source_code_uri"] = "https://github.com/example/example"
@@ -21,16 +21,17 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   gemspec = File.basename(__FILE__)
-  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) { |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
       (f == gemspec) ||
         f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
     end
-  end
+  }
   spec.bindir = "bin"
   spec.executables = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_dependency "awesome_print", "~> 1.9.2"
   spec.add_dependency "zeitwerk", "~> 2.6.16"
+  spec.metadata["rubygems_mfa_required"] = "true"
 end

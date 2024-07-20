@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Armando
   class Generator
     def initialize(base_directory: nil, fs: FileSystem::Real.new)
-      @fs =  fs
+      @fs = fs
       @base_directory = base_directory || fs.dir.pwd
     end
 
@@ -35,14 +37,14 @@ module Armando
 
     def insert_text_after(text, after:, file:)
       original_content = fs.file.read(full_path(file))
-      new_content = original_content[/(.*#{after})(.*)/, 1]+text+original_content[/(.*#{after})(.*)/, 2]
+      new_content = original_content[/(.*#{after})(.*)/, 1] + text + original_content[/(.*#{after})(.*)/, 2]
 
       fs.file.write(full_path(file), new_content)
     end
 
     def insert_text_before(text, before:, file:)
       original_content = fs.file.read(full_path(file))
-      new_content = original_content[/(.*)(#{before}.*)/, 1]+text+original_content[/(.*)(#{before}.*)/, 2]
+      new_content = original_content[/(.*)(#{before}.*)/, 1] + text + original_content[/(.*)(#{before}.*)/, 2]
 
       fs.file.write(full_path(file), new_content)
     end

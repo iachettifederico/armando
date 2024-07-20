@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Armando
   module FileSystem
     class InMemory
@@ -30,7 +32,7 @@ module Armando
       end
 
       def file_exist?(path)
-        !! fs.dig(*path.split("/"))
+        !!fs.dig(*path.split("/"))
       end
 
       # Dir

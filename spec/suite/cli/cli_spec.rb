@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "spec_helper"
 require "tmpdir"
 
@@ -10,7 +12,7 @@ RSpec.describe "CLI" do
   end
 
   xit "does something" do
-    fs.dir.mktmpdir do |dir|
+    fs.dir.mktmpdir do |_dir|
       content = <<~TEMPLATE
         create_file("my_file", "File Contents")
       TEMPLATE
