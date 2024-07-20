@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 ENV["ENVIRONMENT"] = "test"
 
 if ENV["COVERAGE"] == "true"
   puts "Running specs with coverage"
-  require 'simplecov'
+  require "simplecov"
   SimpleCov.start
 end
 

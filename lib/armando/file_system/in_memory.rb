@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module Armando
   module FileSystem
     class InMemory
-      attr_reader :fs
+      attr_reader :filesystem
 
       def initialize
-        @fs = {}
+        @filesystem = {}
       end
 
       def file
@@ -21,16 +23,16 @@ module Armando
 
       # File
       def file_read(path)
-        fs.dig(*path.split("/")).string
+        filesystem.dig(*path.split("/")).string
       end
 
       def file_write(path, content)
         *path_arr, file = path.split("/")
-        fs.dig(*path_arr)[file] = StringIO.new(content)
+        filesystem.dig(*path_arr)[file] = StringIO.new(content)
       end
 
       def file_exist?(path)
-        !! fs.dig(*path.split("/"))
+        !!filesystem.dig(*path.split("/"))
       end
 
       # Dir
@@ -51,14 +53,14 @@ module Armando
 
       # Fileutils
       def mkdir_p(path)
-        path.split("/").inject(fs) do |fs, current_dir|
-          fs[current_dir] ||= {}
+        path.split("/").inject(filesystem) do |filesystem, current_dir|
+          filesystem[current_dir] ||= {}
         end
       end
 
       def rm_rf(path)
         *path_arr, last = path.split("/")
-        fs.dig(*path_arr).delete(last)
+        filesystem.dig(*path_arr).delete(last)
       end
     end
   end
