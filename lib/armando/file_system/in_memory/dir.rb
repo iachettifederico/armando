@@ -4,26 +4,25 @@ module Armando
   module FileSystem
     class InMemory
       class Dir
-        def self.[](fs)
-          new(fs: fs)
+        def self.[](filesystem)
+          new(filesystem: filesystem)
         end
 
-        def initialize(fs:)
-          @fs = fs
+        def initialize(filesystem:)
+          @filesystem = filesystem
         end
 
         def pwd
-          @fs.dir_pwd
+          @filesystem.dir_pwd
         end
 
         def chdir(path, &block)
-          @fs.dir_chdir(path, &block)
+          @filesystem.dir_chdir(path, &block)
         end
 
         def mktmpdir(&block)
-          dir_name = "rand"
           tmpdir = "/tmp/rand"
-          @fs.mkdir_p(tmpdir)
+          @filesystem.mkdir_p(tmpdir)
           chdir(tmpdir, &block)
         end
       end

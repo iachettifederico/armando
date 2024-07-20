@@ -4,20 +4,20 @@ module Armando
   module FileSystem
     class InMemory
       class File
-        def self.[](fs)
-          new(fs: fs)
+        def self.[](filesystem)
+          new(filesystem: filesystem)
         end
 
-        def initialize(fs:)
-          @fs = fs
+        def initialize(filesystem:)
+          @filesystem = filesystem
         end
 
         def read(path)
-          @fs.file_read(path)
+          @filesystem.file_read(path)
         end
 
         def write(path, content="")
-          @fs.file_write(path, content)
+          @filesystem.file_write(path, content)
         end
 
         def join(*path)
@@ -25,7 +25,7 @@ module Armando
         end
 
         def exist?(path)
-          @fs.file_exist?(path)
+          @filesystem.file_exist?(path)
         end
       end
     end

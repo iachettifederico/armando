@@ -1,30 +1,32 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
+
+# TODO: Make ^true and fix errors
 
 require "spec_helper"
 
 require "pathname"
 
 RSpec.describe "XXX spec" do
-  let(:root_dir) { Pathname.new(__dir__ + "/../../..").expand_path }
+  let(:root_dir) { Pathname.new("#{__dir__}/../../..").expand_path }
   let(:base_dir) { "#{root_dir}/tmp" }
 
-  let(:fs) { Armando::FileSystem::InMemory.new }
+  let(:filesystem) { Armando::FileSystem::InMemory.new }
 
   def new_generator(&block)
     Class.new(Armando::Generator, &block)
-         .new(base_directory: base_dir, fs: fs)
+         .new(base_directory: base_dir, filesystem: filesystem)
   end
 
   def read(path)
-    fs.file.read(path)
+    filesystem.file.read(path)
   end
 
   def join(*path)
-    fs.file.join(*path)
+    filesystem.file.join(*path)
   end
 
   def exist?(*path)
-    fs.file.exist?(*path)
+    filesystem.file.exist?(*path)
   end
 
   it "can create a directory under the project root" do
@@ -145,7 +147,7 @@ RSpec.describe "XXX spec" do
 
       expected_text = "1 2 3"
 
-      expect(read(join(base_dir, "my_file"))).to eql("1 2 3")
+      expect(read(join(base_dir, "my_file"))).to eql(expected_text)
     end
 
     it "can add a text before a string" do

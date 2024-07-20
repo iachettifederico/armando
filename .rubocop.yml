@@ -10,7 +10,9 @@ AllCops:
   Exclude:
   - ".git/**/*"
   - bin/**/*
-  - sandbox/**/*
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
 
 Layout/HashAlignment:
   EnforcedColonStyle: table
@@ -93,7 +95,3 @@ Style/TrailingCommaInHashLiteral:
 
 Style/TrivialAccessors:
   Enabled: false
-
-Lint/ConstantDefinitionInBlock:
-  Exclude:
-  - "spec/suite/functional/tracker/**/*"
